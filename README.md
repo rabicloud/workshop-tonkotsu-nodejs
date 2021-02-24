@@ -1,6 +1,6 @@
 ## Welcome
 
-Welcome to challenge 4
+Welcome to challenge 4 issue closing automatic!
 
 This repository contains the base project part of our on-site GitHub Verified Partner workshop program. It is meant to be used for in-classroom training under the supervision of GitHub coaches.
 
