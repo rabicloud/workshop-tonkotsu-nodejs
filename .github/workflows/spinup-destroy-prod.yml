@@ -6,15 +6,15 @@ on:
 
 env:
   PACKAGES_TOKEN: ${{secrets.PACKAGES_TOKEN}}
-  AZURE_RESOURCE_GROUP: Nodejs-RG
-  AZURE_APP_PLAN: actions-ttt-deployment
+  AZURE_RESOURCE_GROUP: Nodejs-RG-Prod
+  AZURE_APP_PLAN: actions-prod-deployment
   AZURE_LOCATION: '"Central US"'
   #################################################
   ### USER PROVIDED VALUES ARE REQUIRED BELOW   ###
   #################################################
   #################################################
   ### REPLACE USERNAME WITH GH USERNAME         ###
-  AZURE_WEBAPP_NAME: challenge-5
+  AZURE_WEBAPP_NAME: challenge-5-prod
   #################################################
 
 jobs:
@@ -22,7 +22,7 @@ jobs:
   setup-up-azure-resources:
     runs-on: ubuntu-latest
 
-    if: contains(github.event.pull_request.labels.*.name, 'spin up environment')
+    if: contains(github.event.pull_request.labels.*.name, 'spin up prod environment')
 
     steps:
       - name: Checkout repository
@@ -45,14 +45,14 @@ jobs:
         if: success()
         run: |
           az webapp create --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --plan ${{ env.AZURE_APP_PLAN }} --name ${{ env.AZURE_WEBAPP_NAME }} --runtime "NODE|12-lts"
-      - name: Create a deployment slot with the name staging
+      - name: Create a deployment slot with the name production
         if: success()
         run: |
-          az webapp deployment slot create --name ${{ env.AZURE_WEBAPP_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --slot staging  
+          az webapp deployment slot create --name ${{ env.AZURE_WEBAPP_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --slot production  
   destroy-azure-resources:
     runs-on: ubuntu-latest
 
-    if: contains(github.event.pull_request.labels.*.name, 'destroy environment')
+    if: contains(github.event.pull_request.labels.*.name, 'destroy prod environment')
 
     steps:
       - name: Checkout repository
